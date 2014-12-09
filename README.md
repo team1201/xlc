@@ -35,6 +35,8 @@ Windows 系统，若 pip 命令不可用，可使用下面的命令：
 Excel 文件和配置文件目录
 * export  
 最终文件的输出目录
+* tmpl  
+模版文件的目录
 * command  
 执行的命令, list类型, 传空list表示转换所有配置文件
 * ptype  
@@ -47,6 +49,7 @@ Excel 文件和配置文件目录
     hhlc.main(
         "D:\\works\\hhl\\projects\\config\\xls",
 	    "D:\\works\\hhl\\projects\\config\\export", 
+	    "D:\\works\\hhl\\projects\\config\\templates", 
 	    [],
 	    "all"
 	)
@@ -56,6 +59,7 @@ Excel 文件和配置文件目录
     hhlc.main(
 	    "D:\\works\\hhl\\projects\\config\\xls",
 	    "D:\\works\\hhl\\projects\\config\\export", 
+	    "D:\\works\\hhl\\projects\\config\\templates", 
 	    ["hero", "skill"],
 	    "all"
 	)
@@ -65,6 +69,7 @@ Excel 文件和配置文件目录
     hhlc.main(
 	    "D:\\works\\hhl\\projects\\config\\xls",
 	    "D:\\works\\hhl\\projects\\config\\export", 
+	    "D:\\works\\hhl\\projects\\config\\templates", 
 	    ["hero", "skill"],
-	    "all"
+	    "lua"
 	)
