@@ -30,15 +30,15 @@ def get_theModule(files, fnames):
 
 def call(xls, export, tmpl, command=[], ptype="all"):
     if not os.path.exists(xls):
-        raise ParseError("No such file or directory:" + xls)
+        raise ParseError("xls directory is not exists:" + xls)
     if not os.path.exists(export):
-        raise ParseError("No such file or directory:" + export)
+        raise ParseError("export directory is not exists:" + export)
     if not os.path.exists(tmpl):
-        raise ParseError("No such file or directory:" + tmpl)
+        raise ParseError("tmpl directory is not exists:" + tmpl)
 
     dirconf.updateXlsPath(xls)
     dirconf.updateTempPath(tmpl)
-    
+
     if ptype == "all":
         dirconf.updateExportPath(export)
     elif ptype == "lua":
