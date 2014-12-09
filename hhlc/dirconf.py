@@ -16,9 +16,12 @@ lua_path = os.path.join(export_path, "lua")
 
 
 def updateXlsPath(path):
-    global xls_path, temp_path
+    global xls_path
     xls_path = path
-    temp_path = xls_path
+
+def updateTempPath(path):
+    global temp_path
+    temp_path = path
 
 def updateExportPath(path):
     global csv_path, lua_path

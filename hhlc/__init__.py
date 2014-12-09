@@ -4,7 +4,7 @@
 
 import os
 from zrong.base import getFiles
-from hhlc.conf import Parser
+from hhlc.conf import Parser, ParseError
 import hhlc.dirconf as dirconf
 
 
@@ -28,8 +28,17 @@ def get_theModule(files, fnames):
     return filter(is_theFile, files)
 
 
-def call(xls, export, command=[], ptype="all"):
+def call(xls, export, tmpl, command=[], ptype="all"):
+    if not os.path.exists(xls):
+        raise ParseError("No such file or directory:" + xls)
+    if not os.path.exists(export):
+        raise ParseError("No such file or directory:" + export)
+    if not os.path.exists(tmpl):
+        raise ParseError("No such file or directory:" + tmpl)
+
     dirconf.updateXlsPath(xls)
+    dirconf.updateTempPath(tmpl)
+    
     if ptype == "all":
         dirconf.updateExportPath(export)
     elif ptype == "lua":
@@ -46,5 +55,5 @@ def call(xls, export, command=[], ptype="all"):
     parser.parseModules(files)
 
 
-def main(xls, export, command, ptype):
-    call(xls, export, command, ptype)
+def main(xls, export, tmpl, command, ptype):
+    call(xls, export, tmpl, command, ptype)
