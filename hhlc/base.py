@@ -6,11 +6,11 @@ import os
 from enum import Enum
 
 
-class ParseError(Exception):
+class ToError(Exception):
     pass
 
 
-class ParseBase():
+class Tobase():
     _plan, _head, _data, _rowIndex = None, None, None, None
 
     def __init__(self):
@@ -41,20 +41,20 @@ class ParseBase():
 
     def _callFun(self, format, val, conf, *args):
         if format.find("fmt_") != 0:
-            raise ParseError("format key is error:" + format)
+            raise ToError("format key is error:" + format)
         if isinstance(format, list):
             for key in format:
-                val = self.funs[ParseType(key)](val, conf, *args)
+                val = self.funs[Totype(key)](val, conf, *args)
         else:
-            val = self.funs[ParseType(format)](val, conf, *args)
+            val = self.funs[Totype(format)](val, conf, *args)
 
         return val
 
     def _initFuns(self):
         __funs = {}
-        __funs[ParseType.fmt_str] = self.defaultStr
-        __funs[ParseType.fmt_int] = self.defaultInt
-        __funs[ParseType.fmt_array] = self.toArray
+        __funs[Totype.fmt_str] = self.defaultStr
+        __funs[Totype.fmt_int] = self.defaultInt
+        __funs[Totype.fmt_array] = self.toArray
 
         self.funs = __funs
         pass
@@ -105,7 +105,7 @@ class ParseBase():
         return self._plan.get(key) if (key in self._plan) else default
 
 
-class ParseType(Enum):
+class Totype(Enum):
     # 共同的
     fmt_str = "fmt_str"
     fmt_int = "fmt_int"

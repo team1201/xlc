@@ -4,28 +4,24 @@
 
 import os
 from zrong.base import writeByTempl
-import dirconf
-from parsebase import ParseBase, ParseType
+from hhlc.base import Tobase, Totype
+import hhlc.dirconf as dirconf
 
 
-class ParseError(Exception):
-    pass
-
-
-class Parser(ParseBase):
+class Tolua(Tobase):
 
     def __init__(self):
-        super(Parser, self).__init__()
+        super(Tolua, self).__init__()
 
     def _initFuns(self):
-        super(Parser, self)._initFuns()
-        self.funs[ParseType.fmt_class] = self.fmt_class
-        self.funs[ParseType.fmt_class2array] = self.fmt_class2array
-        self.funs[ParseType.fmt_class2array_none] = self.fmt_class2array_none
+        super(Tolua, self)._initFuns()
+        self.funs[Totype.fmt_class] = self.fmt_class
+        self.funs[Totype.fmt_class2array] = self.fmt_class2array
+        self.funs[Totype.fmt_class2array_none] = self.fmt_class2array_none
 
     # 导出 lua
     def parse(self, plan, head, data):
-        super(Parser, self).parse(plan, head, data)
+        super(Tolua, self).parse(plan, head, data)
         start, end = self._getTemplate(self.getPlanKey("template", "default"))
 
         tmpStr = ''

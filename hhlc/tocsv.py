@@ -4,24 +4,24 @@
 
 import os
 import csv
-from parsebase import ParseBase, ParseType
-import dirconf
+from hhlc.base import Tobase, Totype
+import hhlc.dirconf as dirconf
 
 
-class Parser(ParseBase):
+class Tocsv(Tobase):
 
     def __init__(self):
-        super(Parser, self).__init__()
+        super(Tocsv, self).__init__()
 
     def _initFuns(self):
-        super(Parser, self)._initFuns()
-        self.funs[ParseType.fmt_class] = self.fmt_class
-        self.funs[ParseType.fmt_class2array] = self.fmt_class2array
-        self.funs[ParseType.fmt_class2class] = self.fmt_class2class
+        super(Tocsv, self)._initFuns()
+        self.funs[Totype.fmt_class] = self.fmt_class
+        self.funs[Totype.fmt_class2array] = self.fmt_class2array
+        self.funs[Totype.fmt_class2class] = self.fmt_class2class
 
     # 导出 csv
     def parse(self, plan, head, data):
-        super(Parser, self).parse(plan, head, data)
+        super(Tocsv, self).parse(plan, head, data)
         filePath = os.path.join(
             dirconf.csv_path, plan.get("true_name") + '.csv')
 
@@ -84,7 +84,7 @@ class Parser(ParseBase):
         return args[0]
 
     # def getData(self, row, cell):
-    #     val = super(Parser, self).getDataForIndex(row, cell)
+    #     val = super(Tocsv, self).getDataForIndex(row, cell)
     #     return self._parseValueForCsv(val)
 
     def _parseValueForCsv(self, val):

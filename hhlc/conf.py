@@ -5,9 +5,9 @@
 import os
 import xlrd
 from zrong.base import getFiles, readFile
-from parsecsv import Parser as csv
-from parselua import Parser as lua
-import dirconf
+from hhlc.tocsv import Tocsv
+from hhlc.tolua import Tolua
+import hhlc.dirconf as dirconf
 
 
 class ParseError(Exception):
@@ -17,8 +17,8 @@ class ParseError(Exception):
 class Parser():
 
     def __init__(self, ptype):
-        self.csv = csv()
-        self.lua = lua()
+        self.csv = Tocsv()
+        self.lua = Tolua()
         self.ptype = ptype
         pass
 
@@ -101,44 +101,3 @@ class Parser():
         __data = [__table.row_values(i) for i in range(nrows)]
 
         return __data
-
-
-# 排除非模块文件
-def excludeFiles(path):
-    __fname = os.path.basename(path)
-    for exclude in ["__init__.py"]:
-        if exclude == __fname:
-            return False
-    return True
-
-
-# 获取指定文件
-def get_theModule(files, fname):
-    def is_theFile(path):
-        __fname = os.path.basename(path)
-        if fname == __fname:
-            return True
-        return False
-
-    return filter(is_theFile, files)
-
-
-def call(command="all", ptype="all", location=""):
-    if location:
-        if ptype == "all":
-            dirconf.updateExportPath(location)
-        elif ptype == "lua":
-            dirconf.updateLuaPath(location)
-        elif ptype == "csv":
-            dirconf.updateCsvPath(location)
-
-    files = filter(excludeFiles, getFiles(dirconf.xls_path, ["py"]))
-
-    if command != "all":
-        files = get_theModule(files, command + ".py")
-
-    parser = Parser(ptype)
-    parser.parseModules(files)
-
-if __name__ == '__main__':
-    call("hero", "all", "")
