@@ -31,7 +31,7 @@ class Tobase():
             val = self.getDataForKey(self._rowIndex, conf["head"])
         else:
             if ("format" not in conf) or \
-                    (conf["format"] not in ['fmt_class', 'fmt_class2array', 'fmt_class2class', 'fmt_class2array_none']):
+                    (conf["format"] not in ['fmt_class', 'fmt_class2array', 'fmt_class2class']):
                 val = self.getDataForKey(self._rowIndex, conf["key"])
 
         if "format" in conf:
@@ -54,7 +54,6 @@ class Tobase():
         __funs = {}
         __funs[Totype.fmt_str] = self.defaultStr
         __funs[Totype.fmt_int] = self.defaultInt
-        __funs[Totype.fmt_array] = self.toArray
 
         self.funs = __funs
         pass
@@ -66,13 +65,6 @@ class Tobase():
         if args[0] != 0 and not args[0]:
             return ''
         return int(args[0])
-
-    def toArray(self, *args):
-        val = str(args[0])
-        if len(val) == 0:
-            return '{}'
-        data = list(map(self.default, val.split(';')))
-        return '{%s}' % ",".join(data)
 
     def default(self, *args):
         val = str(args[0])          # '10.0'
@@ -115,6 +107,3 @@ class Totype(Enum):
 
     # 用于csv
     fmt_class2class = "fmt_class2class"
-
-    # 用于lua
-    fmt_class2array_none = "fmt_class2array_none"

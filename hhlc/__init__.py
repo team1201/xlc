@@ -57,3 +57,12 @@ def call(xls, export, tmpl, command=[], ptype="all"):
 
 def main(xls, export, tmpl, command, ptype):
     call(xls, export, tmpl, command, ptype)
+
+
+if __name__ == '__main__':
+    call(
+        "D:\\works\\hhl\\projects\\config\\xls", 
+        "D:\\works\\hhl\\projects\\client\\src\\conf", 
+        "D:\\works\\hhl\\projects\\config\\templates",
+        ["skill"],
+        "lua")

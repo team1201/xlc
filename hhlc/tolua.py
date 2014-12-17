@@ -15,9 +15,9 @@ class Tolua(Tobase):
 
     def _initFuns(self):
         super(Tolua, self)._initFuns()
+        self.funs[Totype.fmt_array] = self.fmt_toarray
         self.funs[Totype.fmt_class] = self.fmt_class
         self.funs[Totype.fmt_class2array] = self.fmt_class2array
-        self.funs[Totype.fmt_class2array_none] = self.fmt_class2array_none
 
     # 导出 lua
     def parse(self, plan, head, data):
@@ -51,6 +51,17 @@ class Tolua(Tobase):
 
         self._createFile(tmpStr, plan.get("true_name"))
 
+    def fmt_toarray(self, val, conf, *args):
+        val = str(val)
+        # 所有值为空时是否显示该类 [2] = {...}
+        showNone = conf["showNone"] if "showNone" in conf else True
+
+        if len(val) == 0:
+            return '{}' if showNone else ""
+
+        data = list(map(self.default, val.split(';')))
+        return '{%s}' % ",".join(data)
+
     def fmt_class(self, val, conf, *args):
         tab = args[0] + 1 if (len(args) > 0) else 1
         # 所有值为空时是否显示该类 [2] = {...}
@@ -64,12 +75,12 @@ class Tolua(Tobase):
             return ""
 
     def fmt_class2array(self, val, conf, *args):
-        return self._getClassArray(val, conf, *args)[0]
+        # 所有值为空时是否显示该类 [2] = {...}
+        showNone = conf["showNone"] if "showNone" in conf else True
 
-    def fmt_class2array_none(self, val, conf, *args):
-        tmpStr, allNone = self._getClassArray(val, conf, *args)
+        tmpStr, isNone = self._getClassArray(val, conf, *args)
 
-        if not allNone:
+        if showNone or not isNone:
             return tmpStr
         else:
             return ""
