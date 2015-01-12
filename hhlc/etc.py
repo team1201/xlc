@@ -41,17 +41,17 @@ class Parser():
         self.saveFile(tmpStr, "etc")
 
     def _parseHero(self, obj, heroId):
-        start = '["%s"]={\n'
+        start = '[%s]={\n'
         end = '}\n\n'
         tmpStr = ''
 
         for key in obj["skill"].keys():
-            # print(key, obj["skill"][key])
-            tmpStr += self._tab(1) + start % self._parseSkillKey(key, heroId)
+            id = self._parseSkillKey(key, heroId)
+            tmpStr += self._tab(1) + start % id
             if type(obj["skill"][key]) != str:
-                tmpStr += self.parseHeroClass(obj["skill"][key])
+                tmpStr += self.parseHeroClass(id, obj["skill"][key])
             else:
-                tmpStr += self.getSkill(2, *obj["skill"][key].split(','))
+                tmpStr += self.getSkill(2, id, *obj["skill"][key].split(','))
             tmpStr += self._tab(1) + end
 
         return tmpStr
@@ -68,13 +68,14 @@ class Parser():
 
         return "null"
 
-    def parseHeroClass(self, obj):
-        return self.getSkill(2, obj["effects_b_ready"], obj["effects_b"], obj["effects_f_ready"], obj["effects_f"], obj["t_sex"], obj["t_syb"], obj["t_sb"], obj["ce_b_ready"], obj["ce_b_no"], obj["ce_f_ready"], obj["ce_f_no"], obj["t_syx"], obj["t_sd"], obj["zoom"], obj["zoom_no"], obj["shake"], obj["shake_no"], obj["shine1"], obj["shine1_no"], obj["shine2"], obj["shine2_no"])
+    def parseHeroClass(self, key, obj):
+        return self.getSkill(2, key, obj["effects_b_ready"], obj["effects_b"], obj["effects_f_ready"], obj["effects_f"], obj["t_sex"], obj["t_syb"], obj["t_sb"], obj["ce_b_ready"], obj["ce_b_no"], obj["ce_f_ready"], obj["ce_f_no"], obj["t_syx"], obj["t_sd"], obj["zoom"], obj["zoom_no"], obj["shake"], obj["shake_no"], obj["shine1"], obj["shine1_no"], obj["shine2"], obj["shine2_no"])
 
-    def getSkill(self, tab, *args):
+    def getSkill(self, tab, id, *args):
         _tab = self._tab(tab)
         # print(len(args))
-        return _tab + 'effects_b_ready=' + self.getValue(args[0]) + ',\n' + \
+        return _tab + 'id=' + id + ',\n' + \
+            _tab + 'effects_b_ready=' + self.getValue(args[0]) + ',\n' + \
             _tab + 'effects_b=' + self.getValue(args[1]) + ',\n' + \
             _tab + 'effects_f_ready=' + self.getValue(args[2]) + ',\n' + \
             _tab + 'effects_f=' + self.getValue(args[3]) + ',\n' + \

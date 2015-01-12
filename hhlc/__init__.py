@@ -55,7 +55,7 @@ def call(xls, export, tmpl, command=[], ptype="all"):
     parser.parseModules(files)
 
 
-def main(xls, export, tmpl, command, ptype):
+def callDt(xls, export, tmpl, command, ptype):
     call(xls, export, tmpl, command, ptype)
 
 def callEtc(heroPath, sszPath, exportPath):
@@ -63,7 +63,7 @@ def callEtc(heroPath, sszPath, exportPath):
     etc.call(heroPath, sszPath, exportPath)
 
 if __name__ == '__main__':
-    # call(
+    # callDt(
     #     "D:\\works\\hhl\\projects\\config\\xls", 
     #     "D:\\works\\hhl\\projects\\client\\src\\conf", 
     #     "D:\\works\\hhl\\projects\\config\\templates",
