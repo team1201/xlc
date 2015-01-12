@@ -59,20 +59,20 @@ def main(xls, export, tmpl, command, ptype):
     call(xls, export, tmpl, command, ptype)
 
 def callEtc(heroPath, sszPath, exportPath):
-    import etc
+    import hhlc.etc as etc
     etc.call(heroPath, sszPath, exportPath)
 
 if __name__ == '__main__':
-    call(
-        "D:\\works\\hhl\\projects\\config\\xls", 
-        "D:\\works\\hhl\\projects\\client\\src\\conf", 
-        "D:\\works\\hhl\\projects\\config\\templates",
-        ["skill"],
-        "lua")
+    # call(
+    #     "D:\\works\\hhl\\projects\\config\\xls", 
+    #     "D:\\works\\hhl\\projects\\client\\src\\conf", 
+    #     "D:\\works\\hhl\\projects\\config\\templates",
+    #     ["skill"],
+    #     "lua")
 
-    # callEtc(
-    #     "D:\\works\\hhl\\projects\\resource\\art",
-    #     "D:\\works\\hhl\\projects\\resource\\art\\ssz",
-    #     "D:\\works\\hhl\\projects\\resource\\skill"
-    # )
+    callEtc(
+        "D:\\works\\hhl\\projects\\resource\\art",
+        "D:\\works\\hhl\\projects\\resource\\art\\ssz",
+        "D:\\works\\hhl\\projects\\resource\\skill"
+    )
 

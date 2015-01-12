@@ -34,7 +34,6 @@ class Parser():
         tmpStr = ''
 
         for path in files:
-            slog.info("parse: %s", os.path.basename(path))
             heroId = os.path.basename(path).split('.')[0]
             obj = json.loads(read_file(path))
             tmpStr += self._parseHero(obj, heroId)
@@ -164,6 +163,7 @@ def call(heroPath, sszPath, exportPath):
 
     # parse heros
     files = filter(herosFiles, get_files(heroPath, ["json"]))
+    slog.info("parse: etc.json")
     parser.parseHero(files)
 
     # parse ssz
