@@ -43,7 +43,7 @@ class Parser():
     def _parseHero(self, obj, heroId):
         self._jsonData = obj
         start = '[%s]={\n'
-        end = '}\n\n'
+        end = '},\n\n'
         tmpStr = ''
 
         hasEnemy = "enemy_action" in obj
@@ -77,16 +77,16 @@ class Parser():
         _tab = self._tab(tab)
         # print(len(args))
         return _tab + 'id=' + id + ',\n' + \
-            _tab + 'effects_b_ready=' + self.getValue(obj["effects_b_ready"]) + ',\n' + \
-            _tab + 'effects_b=' + self.getTable(obj["effects_b"]) + ',\n' + \
-            _tab + 'effects_f_ready=' + self.getValue(obj["effects_f_ready"]) + ',\n' + \
-            _tab + 'effects_f=' + self.getTable(obj["effects_f"]) + ',\n' + \
+            _tab + 'effects_b=' + self.getValue(obj["effects_b"]) + ',\n' + \
+            _tab + 'effects_b_no=' + self.getTable(obj["effects_b_no"]) + ',\n' + \
+            _tab + 'effects_f=' + self.getValue(obj["effects_f"]) + ',\n' + \
+            _tab + 'effects_f_no=' + self.getTable(obj["effects_f_no"]) + ',\n' + \
             _tab + 't_sex=' + self.getValue(obj["t_sex"]) + ',\n' + \
             _tab + 't_syb=' + self.getValue(obj["t_syb"]) + ',\n' + \
             _tab + 't_sb=' + self.getValue(obj["t_sb"]) + ',\n' + \
-            _tab + 'ce_b_ready=' + self.getValue(obj["ce_b_ready"]) + ',\n' + \
+            _tab + 'ce_b=' + self.getValue(obj["ce_b"]) + ',\n' + \
             _tab + 'ce_b_no=' + self.getValue(obj["ce_b_no"]) + ',\n' + \
-            _tab + 'ce_f_ready=' + self.getValue(obj["ce_f_ready"]) + ',\n' + \
+            _tab + 'ce_f=' + self.getValue(obj["ce_f"]) + ',\n' + \
             _tab + 'ce_f_no=' + self.getValue(obj["ce_f_no"]) + ',\n' + \
             _tab + 't_syx=' + self.getValue(obj["t_syx"]) + ',\n' + \
             _tab + 't_sd=' + self.getValue(obj["t_sd"]) + ',\n' + \
