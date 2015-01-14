@@ -18,14 +18,14 @@ class Parser():
         self.file_dir = os.getcwd()
 
     def parseConf(self, obj, fileName):
-        start = '["%s"]={\n'
-        end = '}\n\n'
+        start = '["%s"]=\n'
+        end = '\n\n'
         tmpStr = ''
 
         for key in obj.keys():
             # print(key)
             tmpStr += start % key
-            tmpStr += str(obj[key]).replace("[", "{").replace("]", "}")
+            tmpStr += str(obj[key]).replace("[", "{").replace("]", "}") + ","
             tmpStr += end
 
         self.saveFile(tmpStr, fileName)
@@ -41,18 +41,23 @@ class Parser():
         self.saveFile(tmpStr, "etc")
 
     def _parseHero(self, obj, heroId):
+        self._jsonData = obj
         start = '[%s]={\n'
         end = '}\n\n'
         tmpStr = ''
 
-        for key in obj["skill"].keys():
-            id = self._parseSkillKey(key, heroId)
-            tmpStr += self._tab(1) + start % id
-            if type(obj["skill"][key]) != str:
-                tmpStr += self.parseHeroClass(id, obj["skill"][key])
-            else:
-                tmpStr += self.getSkill(2, id, *obj["skill"][key].split(','))
-            tmpStr += self._tab(1) + end
+        hasEnemy = "enemy_action" in obj
+
+        for key in obj["hero_action"].keys():
+            if key in ["skill1","skill2","skill3","skill4"]:
+                id = self._parseSkillKey(key, heroId)
+                tmpStr += self._tab(1) + start % id
+                tmpStr += self.getSkill(2, id, obj["hero_action"][key])
+                if hasEnemy and key in obj["enemy_action"]:
+                    tmpStr += self._parseEnemy_action(2, obj["enemy_action"][key])
+                else:
+                    tmpStr += '\n'
+                tmpStr += self._tab(1) + end
 
         return tmpStr
 
@@ -68,34 +73,51 @@ class Parser():
 
         return "null"
 
-    def parseHeroClass(self, key, obj):
-        return self.getSkill(2, key, obj["effects_b_ready"], obj["effects_b"], obj["effects_f_ready"], obj["effects_f"], obj["t_sex"], obj["t_syb"], obj["t_sb"], obj["ce_b_ready"], obj["ce_b_no"], obj["ce_f_ready"], obj["ce_f_no"], obj["t_syx"], obj["t_sd"], obj["zoom"], obj["zoom_no"], obj["shake"], obj["shake_no"], obj["shine1"], obj["shine1_no"], obj["shine2"], obj["shine2_no"])
-
-    def getSkill(self, tab, id, *args):
+    def getSkill(self, tab, id, obj):
         _tab = self._tab(tab)
         # print(len(args))
         return _tab + 'id=' + id + ',\n' + \
-            _tab + 'effects_b_ready=' + self.getValue(args[0]) + ',\n' + \
-            _tab + 'effects_b=' + self.getValue(args[1]) + ',\n' + \
-            _tab + 'effects_f_ready=' + self.getValue(args[2]) + ',\n' + \
-            _tab + 'effects_f=' + self.getValue(args[3]) + ',\n' + \
-            _tab + 't_sex=' + self.getValue(args[4]) + ',\n' + \
-            _tab + 't_syb=' + self.getValue(args[5]) + ',\n' + \
-            _tab + 't_sb=' + self.getValue(args[6]) + ',\n' + \
-            _tab + 'ce_b_ready=' + self.getValue(args[7]) + ',\n' + \
-            _tab + 'ce_b_no=' + self.getValue(args[8]) + ',\n' + \
-            _tab + 'e_f_ready=' + self.getValue(args[9]) + ',\n' + \
-            _tab + 'ce_f_no=' + self.getValue(args[10]) + ',\n' + \
-            _tab + 't_syx=' + self.getValue(args[11]) + ',\n' + \
-            _tab + 't_sd=' + self.getValue(args[12]) + ',\n' + \
-            _tab + 'zoom=' + self.getValue(args[13]) + ',\n' + \
-            _tab + 'zoom_no=' + self.getValue(args[14]) + ',\n' + \
-            _tab + 'shake=' + self.getValue(args[15]) + ',\n' + \
-            _tab + 'shake_no=' + self.getValue(args[16]) + ',\n' + \
-            _tab + 'shine1=' + self.getValue(args[17]) + ',\n' + \
-            _tab + 'shine1_no=' + self.getValue(args[18]) + ',\n' + \
-            _tab + 'shine2=' + self.getValue(args[19]) + ',\n' + \
-            _tab + 'shine2_no=' + self.getValue(args[20]) + '\n'
+            _tab + 'effects_b_ready=' + self.getValue(obj["effects_b_ready"]) + ',\n' + \
+            _tab + 'effects_b=' + self.getTable(obj["effects_b"]) + ',\n' + \
+            _tab + 'effects_f_ready=' + self.getValue(obj["effects_f_ready"]) + ',\n' + \
+            _tab + 'effects_f=' + self.getTable(obj["effects_f"]) + ',\n' + \
+            _tab + 't_sex=' + self.getValue(obj["t_sex"]) + ',\n' + \
+            _tab + 't_syb=' + self.getValue(obj["t_syb"]) + ',\n' + \
+            _tab + 't_sb=' + self.getValue(obj["t_sb"]) + ',\n' + \
+            _tab + 'ce_b_ready=' + self.getValue(obj["ce_b_ready"]) + ',\n' + \
+            _tab + 'ce_b_no=' + self.getValue(obj["ce_b_no"]) + ',\n' + \
+            _tab + 'ce_f_ready=' + self.getValue(obj["ce_f_ready"]) + ',\n' + \
+            _tab + 'ce_f_no=' + self.getValue(obj["ce_f_no"]) + ',\n' + \
+            _tab + 't_syx=' + self.getValue(obj["t_syx"]) + ',\n' + \
+            _tab + 't_sd=' + self.getValue(obj["t_sd"]) + ',\n' + \
+            _tab + 'zoom=' + self.getValue(obj["zoom"]) + ',\n' + \
+            _tab + 'zoom_no=' + self.getValue(obj["zoom_no"]) + ',\n' + \
+            _tab + 'shake=' + self.getValue(obj["shake"]) + ',\n' + \
+            _tab + 'shake_no=' + self.getValue(obj["shake_no"]) + ',\n' + \
+            _tab + 'shine1=' + self.getValue(obj["shine1"]) + ',\n' + \
+            _tab + 'shine1_no=' + self.getValue(obj["shine1_no"]) + ',\n' + \
+            _tab + 'shine2=' + self.getValue(obj["shine2"]) + ',\n' + \
+            _tab + 'shine2_no=' + self.getValue(obj["shine2_no"])
+
+    def _parseEnemy_action(self, tab, obj):
+        _tab = self._tab(tab)
+        return  ',\n' + \
+            _tab + 'e_effects_no=' + self.getValue(obj["e_effects_no"]) + ',\n' + \
+            _tab + 'e_shine1=' + self.getValue(obj["e_shine1"]) + ',\n' + \
+            _tab + 'e_shine1_no=' + self.getValue(obj["e_shine1_no"]) + ',\n' + \
+            _tab + 'e_shine2=' + self.getValue(obj["e_shine2"]) + ',\n' + \
+            _tab + 'e_shine2_no=' + self.getValue(obj["e_shine2_no"]) + ',\n' + \
+            _tab + 'e_desc=' + self.getValue(obj["e_desc"]) + ',\n' + \
+            _tab + 'e_desc_no=' + self.getValue(obj["e_desc_no"]) + ',\n' + \
+            _tab + 'e_icon=' + self.getValue(obj["e_icon"]) + ',\n' + \
+            _tab + 'e_icon_no=' + self.getValue(obj["e_icon_no"]) + ',\n' + \
+            _tab + 'e_effects_b=' + self.getValue(obj["e_effects_b"]) + ',\n' + \
+            _tab + 'e_effects_b_no=' + self.getValue(obj["e_effects_b_no"]) + ',\n' + \
+            _tab + 'e_effects_f=' + self.getValue(obj["e_effects_f"]) + ',\n' + \
+            _tab + 'e_effects_f_no=' + self.getValue(obj["e_effects_f_no"]) + ',\n' + \
+            _tab + 'e_arm=' + self.getValue(obj["e_arm"]) + ',\n' + \
+            _tab + 'e_arm_no=' + self.getValue(obj["e_arm_no"]) + ',\n' + \
+            _tab + 'e_label=' + self.getValue(obj["e_label"]) + '\n'
 
     def getValue(self, val):
         val = str(val)          # '10.0'
@@ -106,6 +128,10 @@ class Parser():
             return val
         except ValueError:
             return '"%s"' % str(val)
+
+    def getTable(self, val):
+        val = str(val)
+        return val.replace("[", "{").replace("]", "}")
 
     def _tab(self, tab=1):
         return " " * (tab * 4)
