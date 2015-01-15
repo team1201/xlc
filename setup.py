@@ -33,7 +33,7 @@ package_data = {
 
 setup(
     name="hhlc",
-    version="0.2.0",
+    version="0.2.2",
     url='http://zengrong.net/',
     author='zrong',
     author_email='zrongzrong@gmail.com',

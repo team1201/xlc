@@ -35,7 +35,9 @@ class Parser():
 
         for path in files:
             heroId = os.path.basename(path).split('.')[0]
-            obj = json.loads(read_file(path))
+            jsontxt = read_file(path)
+            jsontxt = re.sub(r'\/\/.*$', '', jsontxt, flags=re.M)
+            obj = json.loads(jsontxt)
             tmpStr += self._parseHero(obj, heroId)
 
         self.saveFile(tmpStr, "etc")
@@ -48,20 +50,23 @@ class Parser():
 
         hasEnemy = "enemy_action" in obj
 
-        for key in obj["hero_action"].keys():
-            if key in ["skill1","skill2","skill3","skill4"]:
-                id = self._parseSkillKey(key, heroId)
-                tmpStr += self._tab(1) + start % id
-                tmpStr += self.getSkill(2, id, obj["hero_action"][key])
-                if hasEnemy and key in obj["enemy_action"]:
-                    tmpStr += self._parseEnemy_action(2, obj["enemy_action"][key])
-                else:
-                    tmpStr += '\n'
-                tmpStr += self._tab(1) + end
+        if "hero_action" in obj:
+            for key in obj["hero_action"].keys():
+                if key in ["attack", "skill1","skill2","skill3","skill4"]:
+                    id = self._parseSkillKey(key, heroId)
+                    tmpStr += self._tab(1) + start % id
+                    tmpStr += self.getSkill(2, id, obj["hero_action"][key])
+                    if hasEnemy and key in obj["enemy_action"]:
+                        tmpStr += self._parseEnemy_action(2, obj["enemy_action"][key])
+                    else:
+                        tmpStr += '\n'
+                    tmpStr += self._tab(1) + end
 
         return tmpStr
 
     def _parseSkillKey(self, key, heroId):
+        if key == "attack":
+            return heroId + "00"
         if key == "skill1":
             return heroId + "11"
         elif key == "skill2":
@@ -158,7 +163,9 @@ def herosFiles(path):
     __fname = os.path.basename(path).split('.')[0]
     try:
         tmp = int(__fname)
-        return True
+        if tmp != 0:
+            return True
+        return False
     except ValueError:
         return False
 
@@ -198,6 +205,6 @@ def call(heroPath, sszPath, exportPath):
     for path in files:
         slog.info("parse: %s", os.path.basename(path))
         jsontxt = read_file(path)
-        jsontxt = re.sub(r'^\/\/.*$', '', jsontxt, flags=re.M)
+        jsontxt = re.sub(r'\/\/.*$', '', jsontxt, flags=re.M)
         obj = json.loads(jsontxt)
         parser.parseConf(obj, os.path.basename(path).split('.')[0])

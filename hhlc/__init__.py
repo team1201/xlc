@@ -60,6 +60,7 @@ def callDt(xls, export, tmpl, command, ptype):
 
 def callEtc(heroPath, sszPath, exportPath):
     import hhlc.etc as etc
+    # import etc
     etc.call(heroPath, sszPath, exportPath)
 
 if __name__ == '__main__':
