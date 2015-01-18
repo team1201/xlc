@@ -35,8 +35,13 @@ class Parser():
 
         for path in files:
             heroId = os.path.basename(path).split('.')[0]
+            print("parse ect:", heroId)
             jsontxt = read_file(path)
+            # replace //
             jsontxt = re.sub(r'\/\/.*$', '', jsontxt, flags=re.M)
+            # replace /**/
+            jsontxt = re.sub(r'\/\*[\w\W]*?\*\/', '', jsontxt, flags=re.M)
+            # print(jsontxt)
             obj = json.loads(jsontxt)
             tmpStr += self._parseHero(obj, heroId)
 
