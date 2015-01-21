@@ -64,16 +64,16 @@ def callEtc(heroPath, sszPath, exportPath):
     etc.call(heroPath, sszPath, exportPath)
 
 if __name__ == '__main__':
-    # callDt(
-    #     "D:\\works\\hhl\\projects\\config\\xls", 
-    #     "D:\\works\\hhl\\projects\\client\\src\\conf", 
-    #     "D:\\works\\hhl\\projects\\config\\templates",
-    #     ["skill"],
-    #     "lua")
+    callDt(
+        "D:\\works\\hhl\\projects\\config\\xls", 
+        "D:\\works\\hhl\\projects\\client\\src\\conf", 
+        "D:\\works\\hhl\\projects\\config\\templates",
+        ["skill"],
+        "lua")
 
-    callEtc(
-        "D:\\works\\hhl\\projects\\resource\\art",
-        "D:\\works\\hhl\\projects\\resource\\art\\ssz",
-        "D:\\works\\hhl\\projects\\resource\\skill"
-    )
+    # callEtc(
+    #     "D:\\works\\hhl\\projects\\resource\\art",
+    #     "D:\\works\\hhl\\projects\\resource\\art\\ssz",
+    #     "D:\\works\\hhl\\projects\\resource\\skill"
+    # )
 

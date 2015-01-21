@@ -18,6 +18,7 @@ class Tolua(Tobase):
         self.funs[Totype.fmt_array] = self.fmt_toarray
         self.funs[Totype.fmt_class] = self.fmt_class
         self.funs[Totype.fmt_class2array] = self.fmt_class2array
+        self.funs[Totype.fmt_lang] = self.fmt_lang
 
     # 导出 lua
     def parse(self, plan, head, data):
@@ -102,6 +103,9 @@ class Tolua(Tobase):
         tmpStr += self._tab(tab) + '}'
 
         return tmpStr, allNone
+
+    def fmt_lang(self, val, conf, *args):
+        return '_("%s")' % str(val)
 
     def _getClass(self, data, tab):
         tmpStr = '{\n'

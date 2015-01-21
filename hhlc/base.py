@@ -105,5 +105,8 @@ class Totype(Enum):
     fmt_class = "fmt_class"
     fmt_class2array = "fmt_class2array"
 
+    # 用于lua
+    fmt_lang = "fmt_lang"
+
     # 用于csv
     fmt_class2class = "fmt_class2class"
