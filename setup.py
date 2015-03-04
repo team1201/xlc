@@ -11,7 +11,7 @@ dependency_links = [
 
 entry_points = {
     'console_scripts': [
-        'hhlc = hhlc:main',
+        'xlc = xlc:call',
     ]
 }
 
@@ -32,13 +32,13 @@ package_data = {
 #    for root, dirs, files in os.walk('bin')]
 
 setup(
-    name="hhlc",
-    version="0.2.4",
+    name="xlc",
+    version="0.2.6",
     url='http://zengrong.net/',
     author='zrong',
     author_email='zrongzrong@gmail.com',
     description="Convert xls to lua and csv file.",
-    packages=['hhlc'],
+    packages=['xlc'],
     classifiers=classifiers,
     #include_package_data=True,
     #package_data=package_data,
