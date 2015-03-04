@@ -1,10 +1,9 @@
-配置文件
-======
+转换 Excel 文档成为 CSV 和 LUA 格式
+===================================
 
-* 文档作者： zm
-* 最后更新： 2014-12-09
-
-该Python库用于保存和转换黄鹤楼项目中的配置文件。
+- 作者： zm [zrong](http://zengrong.net)
+- 创建： 2014-12-09
+- 修改： 2015-03-04 将模块名称从 hhlc 改为 xlc。
 
 # 安装
 
@@ -19,34 +18,34 @@ Windows 系统，若 pip 命令不可用，可使用下面的命令：
 依赖库文件可以是本地文件或者 url，下面两个地址都可用：
 
 	../client/requirements.txt
-	http://192.168.18.18/project/hhl/tool/requirements.txt
+	http://192.168.18.18/project/1201/tool/requirements.txt
 
 # 使用
 
 ## 作为库使用
 
-### 引用hhlc库
+### 引用 xlc 库
 
-    import hhlc
+    import xlc
 
 ### 参数说明
 
-* xls  
+- xls  
 Excel 文件和配置文件目录
-* export  
+- export  
 最终文件的输出目录
-* tmpl  
+- tmpl  
 模版文件的目录
-* command  
+- command  
 执行的命令, list类型, 传空list表示转换所有配置文件
-* ptype  
-指定转换配置文件的类型, 如all/csv/lua
+- ptype  
+指定转换配置文件的类型, 如 all/csv/lua
 
-    hhlc.main(xls, export, command, ptype)
+    xlc.main(xls, export, command, ptype)
     
 ### 转换所有配置文件到export路径
 
-    hhlc.main(
+    xlc.main(
         "D:\\works\\hhl\\projects\\config\\xls",
 	    "D:\\works\\hhl\\projects\\config\\export", 
 	    "D:\\works\\hhl\\projects\\config\\templates", 
@@ -56,7 +55,7 @@ Excel 文件和配置文件目录
     
 ### 转换指定的一个或多个配置文件到export路径
 
-    hhlc.main(
+    xlc.main(
 	    "D:\\works\\hhl\\projects\\config\\xls",
 	    "D:\\works\\hhl\\projects\\config\\export", 
 	    "D:\\works\\hhl\\projects\\config\\templates", 
@@ -66,7 +65,7 @@ Excel 文件和配置文件目录
     
 ### 转换指定类型的配置文件, 并指定导出路径
 
-    hhlc.main(
+    xlc.main(
 	    "D:\\works\\hhl\\projects\\config\\xls",
 	    "D:\\works\\hhl\\projects\\config\\export", 
 	    "D:\\works\\hhl\\projects\\config\\templates", 
