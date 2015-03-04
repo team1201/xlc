@@ -3,9 +3,9 @@
 # Creation 2014-09-26
 
 import os
-from zrong.base import getFiles
-from hhlc.conf import Parser, ParseError
-import hhlc.dirconf as dirconf
+from zrong.base import get_files
+from xlc.conf import Parser, ParseError
+import xlc.dirconf as dirconf
 
 
 # 排除非模块文件
@@ -46,7 +46,7 @@ def call(xls, export, tmpl, command=[], ptype="all"):
     elif ptype == "csv":
         dirconf.updateCsvPath(export)
         
-    files = filter(excludeFiles, getFiles(dirconf.xls_path, ["py"]))
+    files = filter(excludeFiles, get_files(dirconf.xls_path, ["py"]))
 
     if isinstance(command, list) and len(command) != 0:
         files = get_theModule(files, command) # + ".py"
@@ -62,18 +62,3 @@ def callEtc(heroPath, sszPath, exportPath):
     import hhlc.etc as etc
     # import etc
     etc.call(heroPath, sszPath, exportPath)
-
-if __name__ == '__main__':
-    callDt(
-        "D:\\works\\hhl\\projects\\config\\xls", 
-        "D:\\works\\hhl\\projects\\client\\src\\conf", 
-        "D:\\works\\hhl\\projects\\config\\templates",
-        ["skill"],
-        "lua")
-
-    # callEtc(
-    #     "D:\\works\\hhl\\projects\\resource\\art",
-    #     "D:\\works\\hhl\\projects\\resource\\art\\ssz",
-    #     "D:\\works\\hhl\\projects\\resource\\skill"
-    # )
-

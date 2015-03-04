@@ -4,8 +4,8 @@
 
 import os
 import csv
-from hhlc.base import Tobase, Totype
-import hhlc.dirconf as dirconf
+from xlc.base import Tobase, Totype
+import xlc.dirconf as dirconf
 
 
 class Tocsv(Tobase):

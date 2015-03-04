@@ -3,11 +3,12 @@
 # etc = effect tool convertor
 # Author zm
 # Creation 2014-09-26
-# Modification zrong 2015-01-09
+# Modification zrong 2015-03-04
 
 import re
 import os
 import json
+from zrong import slog
 from zrong.base import (write_file, read_file, get_files, slog)
 
 
