@@ -94,10 +94,11 @@ class Parser():
         tmpStr = _tab + 'id=' + id + ',\n'
 
         for val in self.tmpl["hero_action"]:
-            tmpStr += _tab + \
-                val[0] + '=' + \
-                self.getValue(obj[val[0]], val[1]) + \
-                ',\n'
+            if val[0] in obj:
+                tmpStr += _tab + \
+                    val[0] + '=' + \
+                    self.getValue(obj[val[0]], val[1]) + \
+                    ',\n'
 
         return tmpStr[0:-2]
 
@@ -106,10 +107,11 @@ class Parser():
         tmpStr = ',\n'
 
         for val in self.tmpl["enemy_action"]:
-            tmpStr += _tab + \
-                val[0] + '=' + \
-                self.getValue(obj[val[0]], val[1]) + \
-                ',\n'
+            if val[0] in obj:
+                tmpStr += _tab + \
+                    val[0] + '=' + \
+                    self.getValue(obj[val[0]], val[1]) + \
+                    ',\n'
 
         return tmpStr[0:-2] + '\n'
 
