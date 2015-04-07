@@ -27,7 +27,7 @@ class Tocsv(Tobase):
 
         self.chkDirPath(filePath)
 
-        csvfile = open(filePath, 'w', newline='')
+        csvfile = open(filePath, 'w', encoding='utf8', newline='')
         writer = csv.writer(csvfile)
 
         # head
