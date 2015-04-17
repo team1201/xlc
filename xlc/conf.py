@@ -4,10 +4,10 @@
 
 import os
 import xlrd
-from zrong.base import getFiles, readFile
-from hhlc.tocsv import Tocsv
-from hhlc.tolua import Tolua
-import hhlc.dirconf as dirconf
+from zrong.base import (read_file)
+from xlc.tocsv import Tocsv
+from xlc.tolua import Tolua
+import xlc.dirconf as dirconf
 
 
 class ParseError(Exception):
@@ -34,7 +34,7 @@ class Parser():
         for path in files:
             print("parse file: " + os.path.basename(path))
 
-            self.module = self.sheetCheck(eval(readFile(path)))
+            self.module = self.sheetCheck(eval(read_file(path)))
 
             for sheet in self.module.get("sheets"):
                 self.parseSheet(sheet)

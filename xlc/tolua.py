@@ -1,11 +1,12 @@
 # parseLua.py
 # Author zm
 # Creation 2014-09-29
+# Modification 2015-03-04 zrong
 
 import os
-from zrong.base import writeByTempl
-from hhlc.base import Tobase, Totype
-import hhlc.dirconf as dirconf
+from zrong.base import write_by_templ
+from xlc.base import Tobase, Totype
+import xlc.dirconf as dirconf
 
 
 class Tolua(Tobase):
@@ -43,12 +44,16 @@ class Tolua(Tobase):
                             __head = head[conf['index']]
                         elif "head" in conf:
                             __head = conf['head']
+                        elif "key" in conf:
+                            __head = conf['key']
+                        # 如果数据为空, 并且指定的head在忽略列表就不添加此行
                         if __head and __head in plan.get("ignore_head"):
                             addRow = False
                             break
 
             __rowStr += end
-            if addRow: tmpStr += __rowStr
+            if addRow:
+                tmpStr += __rowStr
 
         self._createFile(tmpStr, plan.get("true_name"))
 
@@ -151,7 +156,7 @@ class Tolua(Tobase):
 
         self.chkDirPath(filePath)
 
-        writeByTempl(
+        write_by_templ(
             os.path.join(dirconf.temp_path, "%s.lua" %
                          self.getPlanKey("template", "default")),
             filePath,

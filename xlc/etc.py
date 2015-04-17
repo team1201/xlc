@@ -3,11 +3,12 @@
 # etc = effect tool convertor
 # Author zm
 # Creation 2014-09-26
-# Modification zrong 2015-01-09
+# Modification zrong 2015-03-04
 
 import re
 import os
 import json
+from zrong import slog
 from zrong.base import (write_file, read_file, get_files, slog)
 
 
@@ -16,6 +17,11 @@ class Parser():
     def __init__(self, export):
         self.export = export
         self.file_dir = os.getcwd()
+
+    def parseTmpl(self, path):
+        jsontxt = read_file(os.path.join(path, "tmpl.json"))
+        self.tmpl = json.loads(jsontxt)
+        pass
 
     def parseConf(self, obj, fileName):
         start = '["%s"]=\n'
@@ -35,7 +41,7 @@ class Parser():
 
         for path in files:
             heroId = os.path.basename(path).split('.')[0]
-            print("parse ect:", heroId)
+            # print("parse ect:", heroId)
             jsontxt = read_file(path)
             # replace //
             jsontxt = re.sub(r'\/\/.*$', '', jsontxt, flags=re.M)
@@ -85,51 +91,34 @@ class Parser():
 
     def getSkill(self, tab, id, obj):
         _tab = self._tab(tab)
-        # print(len(args))
-        return _tab + 'id=' + id + ',\n' + \
-            _tab + 'effects_b=' + self.getValue(obj["effects_b"]) + ',\n' + \
-            _tab + 'effects_b_no=' + self.getTable(obj["effects_b_no"]) + ',\n' + \
-            _tab + 'effects_f=' + self.getValue(obj["effects_f"]) + ',\n' + \
-            _tab + 'effects_f_no=' + self.getTable(obj["effects_f_no"]) + ',\n' + \
-            _tab + 't_sex=' + self.getValue(obj["t_sex"]) + ',\n' + \
-            _tab + 't_syb=' + self.getValue(obj["t_syb"]) + ',\n' + \
-            _tab + 't_sb=' + self.getValue(obj["t_sb"]) + ',\n' + \
-            _tab + 'ce_b=' + self.getValue(obj["ce_b"]) + ',\n' + \
-            _tab + 'ce_b_no=' + self.getValue(obj["ce_b_no"]) + ',\n' + \
-            _tab + 'ce_f=' + self.getValue(obj["ce_f"]) + ',\n' + \
-            _tab + 'ce_f_no=' + self.getValue(obj["ce_f_no"]) + ',\n' + \
-            _tab + 't_syx=' + self.getValue(obj["t_syx"]) + ',\n' + \
-            _tab + 't_sd=' + self.getValue(obj["t_sd"]) + ',\n' + \
-            _tab + 'zoom=' + self.getValue(obj["zoom"]) + ',\n' + \
-            _tab + 'zoom_no=' + self.getValue(obj["zoom_no"]) + ',\n' + \
-            _tab + 'shake=' + self.getValue(obj["shake"]) + ',\n' + \
-            _tab + 'shake_no=' + self.getValue(obj["shake_no"]) + ',\n' + \
-            _tab + 'shine1=' + self.getValue(obj["shine1"]) + ',\n' + \
-            _tab + 'shine1_no=' + self.getValue(obj["shine1_no"]) + ',\n' + \
-            _tab + 'shine2=' + self.getValue(obj["shine2"]) + ',\n' + \
-            _tab + 'shine2_no=' + self.getValue(obj["shine2_no"])
+        tmpStr = _tab + 'id=' + id + ',\n'
+
+        for val in self.tmpl["hero_action"]:
+            if val[0] in obj:
+                tmpStr += _tab + \
+                    val[0] + '=' + \
+                    self.getValue(obj[val[0]], val[1]) + \
+                    ',\n'
+
+        return tmpStr[0:-2]
 
     def _parseEnemy_action(self, tab, obj):
         _tab = self._tab(tab)
-        return  ',\n' + \
-            _tab + 'e_effects_no=' + self.getValue(obj["e_effects_no"]) + ',\n' + \
-            _tab + 'e_shine1=' + self.getValue(obj["e_shine1"]) + ',\n' + \
-            _tab + 'e_shine1_no=' + self.getValue(obj["e_shine1_no"]) + ',\n' + \
-            _tab + 'e_shine2=' + self.getValue(obj["e_shine2"]) + ',\n' + \
-            _tab + 'e_shine2_no=' + self.getValue(obj["e_shine2_no"]) + ',\n' + \
-            _tab + 'e_desc=' + self.getValue(obj["e_desc"]) + ',\n' + \
-            _tab + 'e_desc_no=' + self.getValue(obj["e_desc_no"]) + ',\n' + \
-            _tab + 'e_icon=' + self.getValue(obj["e_icon"]) + ',\n' + \
-            _tab + 'e_icon_no=' + self.getValue(obj["e_icon_no"]) + ',\n' + \
-            _tab + 'e_effects_b=' + self.getValue(obj["e_effects_b"]) + ',\n' + \
-            _tab + 'e_effects_b_no=' + self.getValue(obj["e_effects_b_no"]) + ',\n' + \
-            _tab + 'e_effects_f=' + self.getValue(obj["e_effects_f"]) + ',\n' + \
-            _tab + 'e_effects_f_no=' + self.getValue(obj["e_effects_f_no"]) + ',\n' + \
-            _tab + 'e_arm=' + self.getValue(obj["e_arm"]) + ',\n' + \
-            _tab + 'e_arm_no=' + self.getValue(obj["e_arm_no"]) + ',\n' + \
-            _tab + 'e_label=' + self.getValue(obj["e_label"]) + '\n'
+        tmpStr = ',\n'
 
-    def getValue(self, val):
+        for val in self.tmpl["enemy_action"]:
+            if val[0] in obj:
+                tmpStr += _tab + \
+                    val[0] + '=' + \
+                    self.getValue(obj[val[0]], val[1]) + \
+                    ',\n'
+
+        return tmpStr[0:-2] + '\n'
+
+    def getValue(self, val, fmt):
+        if fmt == "table":
+            return self.getTable(val)
+
         val = str(val)          # '10.0'
         try:
             tmp = float(val)        # 10.0
@@ -189,16 +178,18 @@ def confFiles(path):
 
 
 # 获取play.json
-def playFiles(path):
-    __fname = os.path.basename(path)
-    for exclude in ["play.json"]:
-        if exclude == __fname:
-            return True
-    return False
+# def playFiles(path):
+#     __fname = os.path.basename(path)
+#     for exclude in ["play.json"]:
+#         if exclude == __fname:
+#             return True
+#     return False
 
 
 def call(heroPath, sszPath, exportPath):
     parser = Parser(exportPath)
+    #parse tmpl
+    parser.parseTmpl(heroPath)
 
     # parse heros
     files = filter(herosFiles, get_files(heroPath, ["json"]))
