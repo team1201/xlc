@@ -49,11 +49,15 @@ class Tocsv(Tobase):
                             __head = head[conf['index']]
                         elif "head" in conf:
                             __head = conf['head']
+                        elif "key" in conf:
+                            __head = conf['key']
+                        # 如果数据为空, 并且指定的head在忽略列表就不添加此行
                         if __head and __head in plan.get("ignore_head"):
                             addRow = False
                             break
 
-            if addRow: writer.writerow(__row)
+            if addRow:
+                writer.writerow(__row)
 
         csvfile.close()
 
