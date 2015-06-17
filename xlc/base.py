@@ -59,7 +59,7 @@ class Tobase():
         pass
 
     def defaultStr(self, *args):
-        return '"%s"' % str(args[0])
+        return '"%s"' % str(args[0]).replace("\n", "\\n")
 
     def defaultInt(self, *args):
         if args[0] != 0 and not args[0]:

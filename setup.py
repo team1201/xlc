@@ -33,7 +33,7 @@ package_data = {
 
 setup(
     name="xlc",
-    version="0.3.0",
+    version="0.3.1",
     url='http://zengrong.net/',
     author='zrong',
     author_email='zrongzrong@gmail.com',
